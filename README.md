@@ -12,7 +12,16 @@
             float dot = Vector.Dot(vec1, vec2);
             Console.WriteLine(dot);
 ```
-
+ベクトル積の演算のベンチマーク
+要素数10000の時
+|        Method |     Mean |     Error |    StdDev |
+|-------------- |---------:|----------:|----------:|
+|        RinDot | 3.005 us | 0.0094 us | 0.0088 us |
+| DotMathNetMKL | 1.612 us | 0.0170 us | 0.0159 us |
+要素数1Mの時
+|-------------- |---------:|---------:|---------:|
+|        RinDot | 481.0 us | 10.77 us | 31.58 us |
+| DotMathNetMKL | 510.7 us | 10.12 us | 26.85 us |
 
 
 実装済み  
