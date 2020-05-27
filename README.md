@@ -1,7 +1,20 @@
 # RinDotNet
 
-汎用的な高速数値計算ライブラリを目指しています
+汎用的な高速数値計算ライブラリを目指しています  
+使用例
   
+```
+            //  配列の生成
+            float[] vec1 = Enumerable.Range(0, 10000).Select(x => (float)x).ToArray();
+            float[] vec2 = Enumerable.Range(0, 10000).Select(x => (float)2 * x).ToArray();
+
+            //Dot積を得る
+            float dot = Vector.Dot(vec1, vec2);
+            Console.WriteLine(dot);
+```
+
+
+
 実装済み  
 ベクトル内積
   
