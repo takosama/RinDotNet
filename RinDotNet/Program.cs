@@ -17,7 +17,6 @@ namespace RinDotNet
             float dot = Vector.Dot(vec1, vec2);
             Console.WriteLine(dot);
         }
-
     }
 
     class Vector
