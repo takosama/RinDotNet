@@ -12,17 +12,17 @@
             float dot = Vector.Dot(vec1, vec2);
             Console.WriteLine(dot);
 ```
-ベクトル積の演算のベンチマーク
-要素数10000の時
-|        Method |     Mean |     Error |    StdDev |
-|-------------- |---------:|----------:|----------:|
-|        RinDot | 3.005 us | 0.0094 us | 0.0088 us |
-| DotMathNetMKL | 1.612 us | 0.0170 us | 0.0159 us |
-要素数1Mの時
+ベクトルの内積を求める場合のベンチマークです
+要素数が1万個の時のベンチマークです
+|        Method |     Mean |     Error |    StdDev |   Median |
+|-------------- |---------:|----------:|----------:|---------:|
+|        RinDot | 1.382 us | 0.0557 us | 0.1641 us | 1.305 us |
+| DotMathNetMKL | 1.986 us | 0.0925 us | 0.2655 us | 1.910 us |  
+  
+そしてこれが要素数100万個の時のベンチマークです
 |-------------- |---------:|---------:|---------:|
-|        RinDot | 481.0 us | 10.77 us | 31.58 us |
-| DotMathNetMKL | 510.7 us | 10.12 us | 26.85 us |
-
+|        RinDot | 515.6 us | 10.15 us | 19.31 us |
+| DotMathNetMKL | 514.5 us |  4.34 us |  4.06 us |
 
 実装済み  
 ベクトル内積
