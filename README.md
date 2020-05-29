@@ -9,7 +9,7 @@
             float[] vec2 = Enumerable.Range(0, 10000).Select(x => (float)2 * x).ToArray();
 
             //Dot積を得る
-            float dot = Vector.Dot(vec1, vec2);
+            float dot = Vector.Dot(new Vector(vec1),new Vector(vec2));
             Console.WriteLine(dot);
 ```
 ベクトルの内積を求める計算をした際の計算速度と計算誤差についてまとめたグラフです  
