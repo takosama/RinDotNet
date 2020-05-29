@@ -2,6 +2,9 @@
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 using System.Runtime.InteropServices;
+using System.Numerics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RinDotNet
 {
@@ -20,6 +23,8 @@ namespace RinDotNet
             this.array = arr;
             this.lng = array.Length;
         }
+
+
 
         static public float Dot(Vector v0, Vector v1)
         {
@@ -122,6 +127,201 @@ namespace RinDotNet
         }
 
         ~Vector()
+        {
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+    }
+
+
+
+    public unsafe class Mat : IDisposable
+    {
+        int lng;
+        float[] array;
+        float* ptr;
+        GCHandle gch;
+        private bool disposedValue;
+        int w;
+        int h;
+        public Mat(float[] arr,int w,int h)
+        {
+            if (w % 8 != 0 || h % 8 != 0)
+                throw new Exception();
+            this.w = w;
+            this.h = h;
+
+            this.gch = GCHandle.Alloc(arr, GCHandleType.Pinned);
+            this.ptr = (float*)this.gch.AddrOfPinnedObject().ToPointer();
+            this.array = arr;
+            this.lng = array.Length;
+        }
+
+        public void Set(int y,int x,float val)
+        {
+            this.array[y * w + x] = val;
+        }
+
+        public float[][] GetArray
+        {
+            get
+            {
+                float[][] rtn = new float[h][];
+                rtn = rtn.Select(x => new float[w]).ToArray();
+
+                for (int y = 0; y < h; y++)
+                    for (int x = 0; x < w; x++)
+                        rtn[y][x] = array[y * w + x];
+                return rtn;
+            }
+        }
+        
+
+
+        public static Mat Dot(Mat m0, Mat m1)
+        {
+            int w = m1.w;
+            int h = m0.h;
+            Mat rtn = new Mat(new float[w * h], w, h);
+
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
+                    for (int k = 0; k < m0.w; k++)
+                    {
+                        rtn.array[y * w + x] += m0.array[y * m0.w + k] * m1.array[k * m1.w + x];
+                    }
+            return rtn;
+        }
+
+        public static Mat Dot2(Mat m0, Mat m1)
+        {
+            int w = m1.w;
+            int h = m0.h;
+            Mat rtn = new Mat(new float[w * h], w, h);
+
+            for (int y = 0; y < h; y++)
+                for (int k = 0; k < m0.w; k++)
+                    for (int x = 0; x < w; x++)
+                    {
+                        rtn.array[y * w + x] += m0.array[y * m0.w + k] * m1.array[k * m1.w + x];
+                    }
+            return rtn;
+        }
+
+        /// <summary>
+        /// バグああります　実行禁止
+        /// </summary>
+        /// <param name="m0"></param>
+        /// <param name="m1"></param>
+        /// <returns></returns>
+        public static Mat Dot3(Mat m0, Mat m1)
+        {
+            int w = m1.w;
+            int h = m0.h;
+            Mat rtn = new Mat(new float[w * h], w, h);
+
+
+
+
+            for (int yi = 0; yi < h; yi += 8)//
+                for (int ki = 0; ki < m0.w; ki += 8)
+                {
+                    var my = m0.array[(yi + 0) * m0.w + 0]
+                           + m0.array[(yi + 0) * m0.w + 1]
+                           + m0.array[(yi + 0) * m0.w + 2]
+                           + m0.array[(yi + 0) * m0.w + 3]
+                           + m0.array[(yi + 0) * m0.w + 4]
+                           + m0.array[(yi + 0) * m0.w + 5]
+                           + m0.array[(yi + 0) * m0.w + 6]
+                           + m0.array[(yi + 0) * m0.w + 7]
+                           + m0.array[(yi + 1) * m0.w + 0]
+                           + m0.array[(yi + 1) * m0.w + 1]
+                           + m0.array[(yi + 1) * m0.w + 2]
+                           + m0.array[(yi + 1) * m0.w + 3]
+                           + m0.array[(yi + 1) * m0.w + 4]
+                           + m0.array[(yi + 1) * m0.w + 5]
+                           + m0.array[(yi + 1) * m0.w + 6]
+                           + m0.array[(yi + 1) * m0.w + 7]
+                           + m0.array[(yi + 2) * m0.w + 0]
+                           + m0.array[(yi + 2) * m0.w + 1]
+                           + m0.array[(yi + 2) * m0.w + 2]
+                           + m0.array[(yi + 2) * m0.w + 3]
+                           + m0.array[(yi + 2) * m0.w + 4]
+                           + m0.array[(yi + 2) * m0.w + 5]
+                           + m0.array[(yi + 2) * m0.w + 6]
+                           + m0.array[(yi + 2) * m0.w + 7]
+                           + m0.array[(yi + 3) * m0.w + 0]
+                           + m0.array[(yi + 3) * m0.w + 1]
+                           + m0.array[(yi + 3) * m0.w + 2]
+                           + m0.array[(yi + 3) * m0.w + 3]
+                           + m0.array[(yi + 3) * m0.w + 4]
+                           + m0.array[(yi + 3) * m0.w + 5]
+                           + m0.array[(yi + 3) * m0.w + 6]
+                           + m0.array[(yi + 3) * m0.w + 7]
+                           + m0.array[(yi + 4) * m0.w + 0]
+                           + m0.array[(yi + 4) * m0.w + 1]
+                           + m0.array[(yi + 4) * m0.w + 2]
+                           + m0.array[(yi + 4) * m0.w + 3]
+                           + m0.array[(yi + 4) * m0.w + 4]
+                           + m0.array[(yi + 4) * m0.w + 5]
+                           + m0.array[(yi + 4) * m0.w + 6]
+                           + m0.array[(yi + 4) * m0.w + 7]
+                           + m0.array[(yi + 5) * m0.w + 0]
+                           + m0.array[(yi + 5) * m0.w + 1]
+                           + m0.array[(yi + 5) * m0.w + 2]
+                           + m0.array[(yi + 5) * m0.w + 3]
+                           + m0.array[(yi + 5) * m0.w + 4]
+                           + m0.array[(yi + 5) * m0.w + 5]
+                           + m0.array[(yi + 5) * m0.w + 6]
+                           + m0.array[(yi + 5) * m0.w + 7]
+                           + m0.array[(yi + 6) * m0.w + 0]
+                           + m0.array[(yi + 6) * m0.w + 1]
+                           + m0.array[(yi + 6) * m0.w + 2]
+                           + m0.array[(yi + 6) * m0.w + 3]
+                           + m0.array[(yi + 6) * m0.w + 4]
+                           + m0.array[(yi + 6) * m0.w + 5]
+                           + m0.array[(yi + 6) * m0.w + 6]
+                           + m0.array[(yi + 6) * m0.w + 7]
+                           + m0.array[(yi + 7) * m0.w + 0]
+                           + m0.array[(yi + 7) * m0.w + 1]
+                           + m0.array[(yi + 7) * m0.w + 2]
+                           + m0.array[(yi + 7) * m0.w + 3]
+                           + m0.array[(yi + 7) * m0.w + 4]
+                           + m0.array[(yi + 7) * m0.w + 5]
+                           + m0.array[(yi + 7) * m0.w + 6]
+                           + m0.array[(yi + 7) * m0.w + 7];
+                    Vector256<float> myk = Vector256.Create(my, my, my, my, my, my, my, my);
+
+                    for (int x = 0; x < w; x += 8)
+                    {
+                        float* pt = rtn.ptr + x + yi * w;
+                        float* pt2 = m1.ptr + x * m1.w;
+                        var tmp = Avx.LoadVector256(pt2);
+
+                        Avx.Store(pt, Avx.Multiply(tmp, myk));
+                    }
+                }
+
+                        //    rtn.array[y * w + x] += m0.array[y * m0.w + k] * m1.array[k * m1.w + x];
+            return rtn;
+
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                this.gch.Free();
+                disposedValue = true;
+            }
+        }
+
+        ~Mat()
         {
             Dispose(disposing: false);
         }
