@@ -12,18 +12,7 @@
             float dot = Vector.Dot(vec1, vec2);
             Console.WriteLine(dot);
 ```
-ベクトルの内積を求める場合のベンチマークです
-要素数が1万個の時のベンチマークです
-|        Method |     Mean |     Error |    StdDev |
-|-------------- |---------:|----------:|----------:|
-|        RinDot | 1.382 us | 0.0557 us | 0.1641 us |
-| DotMathNetMKL | 1.986 us | 0.0925 us | 0.2655 us |
-  
-そしてこれが要素数100万個の時のベンチマークです
-|        Method |     Mean |    Error |   StdDev |
-|-------------- |---------:|---------:|---------:|
-|        RinDot | 515.6 us | 10.15 us | 19.31 us |
-| DotMathNetMKL | 514.5 us |  4.34 us |  4.06 us |
+![EZKkzBNUcAEhP9x](https://user-images.githubusercontent.com/16166677/83228956-123df880-a1c2-11ea-83dd-0b86d8443daa.png)
 
 実装済み  
 ベクトル内積
@@ -33,8 +22,6 @@
 行列演算  
 機械学習  
   
-ベクトル内積においてはi5 7200uのCPUにて60Gflops超え(要素数10000)を達成しており非常に高速です  
-通常の配列を渡すだけで使えるお手軽使用なライブラリを製作していく予定です  
 ぜひ支援等よろしくお願いします  
   
 @rin_sns_  
