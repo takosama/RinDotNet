@@ -32,7 +32,7 @@ namespace PG
 
             //  配列の生成
             float[] vec1 = Enumerable.Range(0, 10000).Select(x => (float)x).ToArray();
-            float[] vec2 = Enumerable.Range(0, 10000).Select(x => (float)2 * x).ToArray();
+            float[] vec2 = Enumerable.Range(0, 10000).Select(x  => (float)2 * x).ToArray();
 
             //Dot積を得る
             float dot = Vector.Dot(new Vector(vec1), new Vector(vec2));
