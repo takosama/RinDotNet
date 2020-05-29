@@ -45,7 +45,7 @@ namespace PG
         int size = 100000000;
         float[] vec1;
         float[] vec2;
-        Vector<float> v1;
+        Vector<float> v1; 
         Vector<float> v2;
 
         Vector mv1;
